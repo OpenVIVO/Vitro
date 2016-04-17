@@ -285,7 +285,7 @@ public class FreemarkerHttpServlet extends VitroHttpServlet  {
         
         // Tell the template and any directives it uses that we're processing a page template.
         templateDataModel.put("templateType", PAGE_TEMPLATE_TYPE);  
-        
+
         writePage(templateDataModel, vreq, response, values.getStatusCode(), values);       
     }
     
@@ -533,15 +533,16 @@ public class FreemarkerHttpServlet extends VitroHttpServlet  {
 
     protected void writeTemplate(String templateName, Map<String, Object> map,
             HttpServletRequest request, HttpServletResponse response, int statusCode) throws TemplateProcessingException {       
-        StringWriter sw = processTemplate(templateName, map, request);     
+        StringWriter sw = processTemplate(templateName, map, request);
         write(sw, response, statusCode);
     }
     
     protected void write(StringWriter sw, HttpServletResponse response, int statusCode) {        
         try {
             setResponseStatus(response, statusCode);
+            response.setContentType("text/html");
             PrintWriter out = response.getWriter();
-            out.print(sw);     
+            out.print(sw);
         } catch (IOException e) {
             log.error("FreeMarkerHttpServlet cannot write output", e);
         }            
