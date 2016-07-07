@@ -7,6 +7,8 @@ import java.io.OutputStream;
 import java.util.List;
 
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelChangedListener;
+
 import edu.cornell.mannlib.vitro.webapp.rdfservice.ChangeListener;
 import edu.cornell.mannlib.vitro.webapp.rdfservice.ChangeSet;
 import edu.cornell.mannlib.vitro.webapp.rdfservice.RDFService;
@@ -111,6 +113,15 @@ public class LoggingRDFService implements RDFService {
 		}
 	}
 
+	@Override
+	public boolean isEquivalentGraph(String graphURI,
+									 Model graph)
+			throws RDFServiceException {
+		try (RDFServiceLogger l = new RDFServiceLogger(graphURI)) {
+			return innerService.isEquivalentGraph(graphURI, graph);
+		}
+	}
+
 	// ----------------------------------------------------------------------
 	// Untimed methods
 	// ----------------------------------------------------------------------
@@ -152,6 +163,18 @@ public class LoggingRDFService implements RDFService {
 	public void unregisterListener(ChangeListener changeListener)
 			throws RDFServiceException {
 		innerService.unregisterListener(changeListener);
+	}
+
+	@Override
+	public void registerJenaModelChangedListener(ModelChangedListener changeListener)
+	        throws RDFServiceException {
+	    innerService.registerJenaModelChangedListener(changeListener);
+	}
+
+	@Override
+	public void unregisterJenaModelChangedListener(ModelChangedListener changeListener)
+	        throws RDFServiceException {
+	    innerService.unregisterJenaModelChangedListener(changeListener);
 	}
 
 	@Override

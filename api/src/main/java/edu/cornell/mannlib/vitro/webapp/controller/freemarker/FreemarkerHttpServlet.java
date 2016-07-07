@@ -429,8 +429,6 @@ public class FreemarkerHttpServlet extends VitroHttpServlet  {
      *  shared variables in the Configuration. (Though we could reset them like other 
      *  shared variables. These variables are not needed outside the page and body templates,
      *  however. If they are needed elsewhere, add to shared variables.
-     *  @param VitroRequest vreq
-     *  @return Map<String, Object>
      */
     // RY This is protected instead of private so FreeMarkerComponentGenerator can access.
     // Once we don't need that (i.e., jsps have been eliminated) it can be made private.
@@ -440,7 +438,9 @@ public class FreemarkerHttpServlet extends VitroHttpServlet  {
         
         ApplicationBean appBean = vreq.getAppBean();
         // This may be overridden by the body data model received from the subcontroller.
-        map.put("siteName", getTitle(vreq.getAppBean().getApplicationName(), vreq));
+        map.put("title", getTitle(vreq.getAppBean().getApplicationName(), vreq));
+
+        map.put("siteName", vreq.getAppBean().getApplicationName());
         
         map.put("urls", buildRequestUrls(vreq));
 
@@ -464,6 +464,7 @@ public class FreemarkerHttpServlet extends VitroHttpServlet  {
         map.put("stylesheets", new Tags().wrap());
         map.put("scripts", new Tags().wrap());
         map.put("headScripts", new Tags().wrap());
+        map.put("metaTags", new Tags().wrap());
 
         return map;        
     }  

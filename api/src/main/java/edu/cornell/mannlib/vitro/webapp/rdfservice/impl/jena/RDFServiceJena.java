@@ -91,16 +91,6 @@ public abstract class RDFServiceJena extends RDFServiceImpl implements RDFServic
 		}
 	}  
 
-    protected void notifyListenersOfChanges(ChangeSet changeSet)
-			throws IOException {
-		for (ModelChange modelChange: changeSet.getModelChanges()) {
-			modelChange.getSerializedModel().reset();
-			Model model = ModelFactory.createModelForGraph(
-					new ListeningGraph(modelChange.getGraphURI(), this));
-			operateOnModel(model, modelChange, null);
-		}
-	}
-
     protected void notifyListenersOfPostChangeEvents(ChangeSet changeSet) {
 		for (Object o : changeSet.getPostChangeEvents()) {
 		    this.notifyListenersOfEvent(o);
@@ -607,7 +597,22 @@ public abstract class RDFServiceJena extends RDFServiceImpl implements RDFServic
 		return fileModel.isIsomorphicWith(fromTripleStoreModel);
 	}
 
-	@Override
+    /**
+     * The basic version. Parse the model from the file, read the model from the
+     * tripleStore, and ask whether they are isomorphic.
+     */
+    @Override
+    public boolean isEquivalentGraph(String graphURI, Model graph) throws RDFServiceException {
+        // Retrieve the graph to compare
+        Model tripleStoreModel = new RDFServiceDataset(this).getNamedModel(graphURI);
+
+        // Load the entire graph into memory (faster comparison)
+        Model fromTripleStoreModel = ModelFactory.createDefaultModel().add(tripleStoreModel);
+
+        return graph.isIsomorphicWith(fromTripleStoreModel);
+    }
+
+    @Override
     public void close() {
         // nothing
     }
