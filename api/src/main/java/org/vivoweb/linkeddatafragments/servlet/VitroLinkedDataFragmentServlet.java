@@ -149,10 +149,10 @@ public class VitroLinkedDataFragmentServlet extends VitroHttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-        int fileNamePos = request.getRequestURI().toLowerCase().lastIndexOf("/tpf/assets/");
+        int fileNamePos = request.getRequestURI().toLowerCase().lastIndexOf("tpf/assets/");
         if (fileNamePos > 0) {
             try {
-                String fileName = request.getRequestURI().substring(fileNamePos + 12);
+                String fileName = request.getRequestURI().substring(fileNamePos + 11);
                 InputStream in = VitroLinkedDataFragmentServlet.class.getResourceAsStream(fileName);
                 if (in != null) {
                     IOUtils.copy(in, response.getOutputStream());
