@@ -1,6 +1,6 @@
 package org.linkeddatafragments.fragments;
 
-import org.apache.jena.rdf.model.StmtIterator;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 import java.io.Closeable;
 

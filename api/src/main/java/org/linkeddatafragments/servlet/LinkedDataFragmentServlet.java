@@ -95,10 +95,10 @@ public class LinkedDataFragmentServlet extends HttpServlet {
 
             // register content types
             MIMEParse.register("text/html");
-            MIMEParse.register(Lang.TTL.getHeaderString());
-            MIMEParse.register(Lang.JSONLD.getHeaderString());
-            MIMEParse.register(Lang.NTRIPLES.getHeaderString());
-            MIMEParse.register(Lang.RDFXML.getHeaderString());
+            MIMEParse.register("text/turtle");
+//            MIMEParse.register("application/ld+json");
+            MIMEParse.register("application/n-triples");
+            MIMEParse.register("application/rdf+xml");
         } catch (Exception e) {
             throw new ServletException(e);
         }

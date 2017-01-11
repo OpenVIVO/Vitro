@@ -1,7 +1,7 @@
 package org.linkeddatafragments.util;
 
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.linkeddatafragments.exceptions.NoRegisteredMimeTypesException;
 
 import java.util.ArrayList;

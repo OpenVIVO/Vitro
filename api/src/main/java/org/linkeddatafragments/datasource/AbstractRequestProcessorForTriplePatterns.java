@@ -1,6 +1,6 @@
 package org.linkeddatafragments.datasource;
 
-import org.apache.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.Model;
 import org.linkeddatafragments.fragments.ILinkedDataFragment;
 import org.linkeddatafragments.fragments.ILinkedDataFragmentRequest;
 import org.linkeddatafragments.fragments.tpf.ITriplePatternElement;

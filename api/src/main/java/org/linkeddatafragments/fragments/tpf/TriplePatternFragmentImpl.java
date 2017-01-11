@@ -1,7 +1,7 @@
 package org.linkeddatafragments.fragments.tpf;
 
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.StmtIterator;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
 
 
 /**

@@ -1,11 +1,11 @@
 package org.linkeddatafragments.fragments;
 
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.jena.rdf.model.Literal;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.rdf.model.StmtIterator;
+import com.hp.hpl.jena.rdf.model.Literal;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
 import org.linkeddatafragments.util.CommonResources;
 
 import java.net.URISyntaxException;

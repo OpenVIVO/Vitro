@@ -1,6 +1,6 @@
 package org.linkeddatafragments.fragments.tpf;
 
-import org.apache.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.linkeddatafragments.util.TriplePatternElementParserForJena;
 
 /**
