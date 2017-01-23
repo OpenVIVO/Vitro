@@ -162,6 +162,30 @@ public class RDFServiceSDB extends RDFServiceJena implements RDFService {
     }
 
     @Override
+    public long countTriples(RDFNode subject, RDFNode predicate, RDFNode object) throws RDFServiceException {
+        if (subject != null || predicate != null || object != null) {
+            return super.countTriples(subject, predicate, object);
+        }
+
+        if (LayoutType.LayoutTripleNodesHash.equals(storeDesc.getLayout())) {
+            SDBConnection sdbConn = getSDBConnection();
+            try {
+                Statement stmt = sdbConn.getSqlConnection().createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT count(DISTINCT s,p,o) AS tcount FROM Quads");
+                while (rs.next()) {
+                    return rs.getLong("tcount");
+                }
+            } catch (SQLException sqle) {
+                throw new RDFServiceException("Unable to retrieve triples", sqle);
+            } finally {
+                close(sdbConn);
+            }
+        }
+
+        return 0;
+    }
+
+    @Override
     public Model getTriples(RDFNode subject, RDFNode predicate, RDFNode object, long limit, long offset) throws RDFServiceException {
         if (subject != null || predicate != null || object != null) {
             return super.getTriples(subject, predicate, object, limit, offset);
