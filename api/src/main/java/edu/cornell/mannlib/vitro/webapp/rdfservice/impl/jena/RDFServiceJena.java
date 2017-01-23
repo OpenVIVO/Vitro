@@ -16,6 +16,9 @@ import edu.cornell.mannlib.vitro.webapp.rdfservice.ResultSetConsumer;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import com.hp.hpl.jena.query.QuerySolutionMap;
+import com.hp.hpl.jena.query.Syntax;
+import com.hp.hpl.jena.rdf.model.Literal;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.log4j.lf5.util.StreamUtils;
 
@@ -613,6 +616,83 @@ public abstract class RDFServiceJena extends RDFServiceImpl implements RDFServic
     }
 
     @Override
+    public long countTriples(RDFNode subject, RDFNode predicate, RDFNode object) throws RDFServiceException {
+        Query countQuery = QueryFactory.create("SELECT (COUNT(?s) AS ?count) WHERE { ?s ?p ?o } ORDER BY ?s ?p ?o", Syntax.syntaxSPARQL_11);
+        QuerySolutionMap map = new QuerySolutionMap();
+        if ( subject != null ) {
+            map.add("s", subject);
+        }
+        if ( predicate != null ) {
+            map.add("p", predicate);
+        }
+        if ( object != null ) {
+            map.add("o", object);
+        }
+
+        DatasetWrapper dw = getDatasetWrapper();
+        try {
+            Dataset d = dw.getDataset();
+            QueryExecution qexec = null;
+            try {
+                qexec = QueryExecutionFactory.create(countQuery, d, map);
+                ResultSet results = qexec.execSelect();
+                if (results.hasNext()) {
+                    QuerySolution soln = results.nextSolution() ;
+                    Literal literal = soln.getLiteral("count");
+                    return literal.getLong();
+                }
+            } finally {
+                if (qexec != null) {
+                    qexec.close();
+                }
+            }
+        } finally {
+            dw.close();
+        }
+
+        return 0;
+    }
+
+    @Override
+    public Model getTriples(RDFNode subject, RDFNode predicate, RDFNode object, long limit, long offset) throws RDFServiceException {
+        Query query = QueryFactory.create("CONSTRUCT WHERE { ?s ?p ?o }", Syntax.syntaxSPARQL_11);
+        QuerySolutionMap map = new QuerySolutionMap();
+        if ( subject != null ) {
+            map.add("s", subject);
+        }
+        if ( predicate != null ) {
+            map.add("p", predicate);
+        }
+        if ( object != null ) {
+            map.add("o", object);
+        }
+
+        query.setOffset(offset);
+        query.setLimit(limit);
+
+        Model triples = ModelFactory.createDefaultModel();
+
+        DatasetWrapper dw = getDatasetWrapper();
+        try {
+            Dataset d = dw.getDataset();
+            QueryExecution qexec = null;
+            try {
+                qexec = QueryExecutionFactory.create(query, d, map);
+                qexec.execConstruct(triples);
+            } finally {
+                if (qexec != null) {
+                    qexec.close();
+                }
+            }
+
+            return triples;
+        } finally {
+            dw.close();
+        }
+    }
+
+
+    @Override
     public void close() {
         // nothing
     }
@@ -620,5 +700,4 @@ public abstract class RDFServiceJena extends RDFServiceImpl implements RDFServic
     protected QueryExecution createQueryExecution(String queryString, Query q, Dataset d) {
         return QueryExecutionFactory.create(q, d);
     }
-    
 }
