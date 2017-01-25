@@ -290,7 +290,7 @@ public class RDFServiceSDB extends RDFServiceJena implements RDFService {
             case URI:
                 return NodeFactory.createURI(lex);
             case STRING:
-                return NodeFactory.createLiteral(lex, lang, XSDDatatype.XSDstring);
+                return NodeFactory.createLiteral(lex, lang, false);
             case XSDSTRING:
                 return NodeFactory.createLiteral(lex, XSDDatatype.XSDstring);
             case INTEGER:
